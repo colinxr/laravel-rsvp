@@ -1,0 +1,13 @@
+//
+
+
+.wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form {}
+
+.input-group {
+  & + .input-group { margin-top: 25px; }
+}
