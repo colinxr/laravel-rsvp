@@ -19,7 +19,7 @@ class GuestsController extends Controller
      */
     public function index(Guest $guest)
     {
-        $guests = Guest::approved()->get();
+        $guests = Guest::approved()->get()->sortBy('updated_at');
 
         $guestsCount = $guests->count();
         $plusOneCount = $guests->where('guest-email', '<>', '', 'and')->count();
@@ -130,16 +130,20 @@ class GuestsController extends Controller
     public function destroy(Guest $guest, $id)
     {
       Guest::find($id)->delete();
+
+
       $message = 'delete';
       // flash message
 
       return redirect('admin.unknown.index', compact('message'));
     }
 
-    public function deny(Guest $guest, $id)
+    public function deny(Guest $guest)
     {
-      $guest = Guest::find($id);
-      $guest->update(['status' => 'denied']);
+      // $guest = Guest::find($id);
+      // $guest->update(['status' => 'denied']);
+
+      $guest->deny();
 
       Mail::to($guest->email)->send(
         new DenyUnknown($guest)
@@ -147,21 +151,19 @@ class GuestsController extends Controller
       $message = 'denied';
       // flash message
 
-      return redirect('/admin/unknown');
+      return back();
     }
 
-    public function approve(Guest $guest, $id)
+    public function approve(Guest $guest)
     {
-      $guest = Guest::find($id);
+      $guest->approve();
 
-      $guest->update(['status' => 'approved']);
-      
       Mail::to($guest->email)->send(
         new RsvpConfirmation($guest)
       );
+
       $message = 'approved';
       // flash message
-
-      return redirect('/admin/unknown');
+      return back();
     }
 }

@@ -20,4 +20,14 @@ class Guest extends Model
     {
         return $query->where('status', 'approved');
     }
+
+    public function approve() 
+    {
+        $this->update(['status' => 'approved']);
+    }
+
+    public function deny()
+    {
+        $this->update(['status' => 'denied']);
+    }
 }

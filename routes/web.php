@@ -26,8 +26,8 @@ Route::get('/admin/unknown', 'GuestsController@showUnknowns');
 Route::get('/admin/list', 'PagesControllers@list');
 Route::get('/admin/download', 'EventController@download');
 
-Route::patch('/admin/unknown/deny/{id}', 'GuestsController@deny');
-Route::patch('/admin/unknown/approve/{id}', 'GuestsController@approve');
+Route::patch('/admin/unknown/deny/{guest}', 'GuestsController@deny');
+Route::patch('/admin/unknown/approve/{guest}', 'GuestsController@approve');
 
 Route::patch('/admin/event', 'EventController@update');
 
