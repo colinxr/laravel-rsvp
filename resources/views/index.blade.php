@@ -5,9 +5,9 @@
     <form action="/guest" method="post">
       {{ csrf_field() }}
 
-      <span class="input input--bfm">
-
-        <div class="input-group">
+			
+			<div class="input-group">
+				<span class="input input--bfm">
 						<input class="input__field input__field--bfm" type="text" id="first-name"  name="rsvp[first-name]" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required />
 						<label class="input__label input__label--bfm input__label--bfm-color" for="first-name">
 							<span class="input__label-content input__label-content--bfm">First Name</span>
@@ -35,6 +35,7 @@
 						</label>
 					</span></div>
 
+						<div>
 					<span class="input input--bfm">
 						<input class="input__field input__field--bfm" type="text" id="instagram"  name="rsvp[instagram]" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required />
 						<label class="input__label input__label--bfm input__label--bfm-color" for="instagram">

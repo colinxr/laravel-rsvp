@@ -1,13 +1,28 @@
+@import 'form';
 //
 
+.content { width: 80%; margin: 0 auto; }
 
 .wrapper {
+  width: 90%;
   max-width: 600px;
   margin: 0 auto;
 }
 
-form {}
+table { 
+  margin: 0 auto; 
+
+  
+  th + th,
+  td + td { padding-left: 10px; }
+  
+  tr { padding: 5px 0; }
+  
+  form { display: inline; }
+}
 
 .input-group {
   & + .input-group { margin-top: 25px; }
 }
+
+

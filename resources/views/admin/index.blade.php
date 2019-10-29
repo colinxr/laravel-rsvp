@@ -1,7 +1,21 @@
-@extends('layout')
+@extends('admin')
 
 
 @section('content')
+  <header>
+      <h1>Event App RSVP Entries</h1>
+      <div class="form-group">
+        <h4>Download this List</h4>
+        <form method='post' action='/download'>
+          <input type='submit' value='Export' name='Export'>
+        </form>
+      </div>
+      <?php
+        // $admin = new Admin();
+				// $admin->countResults(DB_TABLE, 'rsvps');
+				// $admin->countResults(DB_TABLE, 'plusOnes');
+      ?>
+    </header>
   <table>
     <thead>
       <tr>
@@ -20,7 +34,7 @@
     <tbody>
       @foreach($guests as $guest)
       <tr>
-        <td>{{ $guest->ID }}</td>
+        <td>{{ $guest->id }}</td>
         <td>{{ $guest->firstName }} {{ $guest->lastName }}</td>
         <td>{{ $guest->email }}</td>
         <td>{{ $guest->postal }}</td>

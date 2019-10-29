@@ -19,13 +19,16 @@ use App\Http\Controllers\EventController;
 Route::get('/', 'GuestsController@create');
 Route::get('/confirm', 'PagesControllers@confirm');
 Route::post('/guest', 'GuestsController@store');
-Route::delete('/guest/{id}', 'GuestsController@destroy');
+// Route::delete('/guest/{id}', 'GuestsController@destroy');
 
 Route::get('/admin', 'GuestsController@index');
 Route::get('/admin/unknown', 'GuestsController@showUnknowns');
-Route::patch('/admin/unknown/{id}', 'GuestController@deny');
-
 Route::get('/admin/list', 'PagesControllers@list');
+Route::get('/admin/download', 'EventController@download');
+
+Route::patch('/admin/unknown/deny/{id}', 'GuestsController@deny');
+Route::patch('/admin/unknown/approve/{id}', 'GuestsController@approve');
+
 Route::patch('/admin/event', 'EventController@update');
 
 

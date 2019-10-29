@@ -119,10 +119,34 @@ class GuestsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Guest $guest)
+    public function destroy(Guest $guest, $id)
     {
-      $guest->delete();
+      Guest::find($id)->delete();
       $message = 'delete';
+      // flash message
+
       return redirect('admin.unknown.index', compact('message'));
+    }
+
+    public function deny(Guest $guest, $id)
+    {
+      // $guest->update(['status' => 'denied']);
+
+      Guest::find($id)->update(['status' => 'denied']);
+      $message = 'denied';
+      // flash message
+
+      return redirect('admin.unknown.index');
+    }
+
+    public function approve(Guest $guest, $id)
+    {
+      // $guest->update(['status' => 'denied']);
+
+      Guest::find($id)->update(['status' => 'approved']);
+      $message = 'denied';
+      // flash message
+
+      return redirect('/admin/unknown');
     }
 }

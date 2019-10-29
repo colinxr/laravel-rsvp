@@ -19233,7 +19233,12 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // export module for unknown guests
+// on button approve 
+// get the information from the row
+// great object and pass through to api
+// on button deny
+// call reject api, pass through the guest ID
 
 /***/ }),
 
