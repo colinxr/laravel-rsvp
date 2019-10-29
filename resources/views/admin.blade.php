@@ -42,7 +42,7 @@
                 <ul class="nav navbar-nav navbar-right">
                 	<li><a href="/">Landing Page</a></li>
                     <li><a href="/admin/">RSVPs</a></li>
-                    <li><a href="/admin/unknowns">Unknowns</a></li>
+                    <li><a href="/admin/unknown">Unknowns</a></li>
                     <li><a href="/admin/list">Settings</a></li>
                 </ul>
                 </div>

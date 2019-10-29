@@ -15,6 +15,8 @@
 				// $admin->countResults(DB_TABLE, 'rsvps');
 				// $admin->countResults(DB_TABLE, 'plusOnes');
       ?>
+      <h6>{{ $guestsCount }} Guests</h6>
+      <h6>{{ $plusOneCount }} Plus Ones</h6>
     </header>
   <table>
     <thead>

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Mail;
+use App\Mail\RsvpConfirmation;
+use App\Mail\DenyUnknown;
 use App\Guest;
 use App\GuestList;
 use App\Unknown;
@@ -17,6 +20,7 @@ class GuestsController extends Controller
     public function index(Guest $guest)
     {
         $guests = Guest::approved()->get();
+
         $guestsCount = $guests->count();
         $plusOneCount = $guests->where('guest-email', '<>', '', 'and')->count();
         
@@ -72,6 +76,10 @@ class GuestsController extends Controller
       $guest->guest_email     = $form['rsvp']['guest-email'];
       $guest->status          = $invited ? 'approved' : 'pending';
       $guest->save();
+
+      Mail::to($guest->email)->send(
+        new RsvpConfirmation($guest)
+      );
 
       $message = $invited ? 'Confirmed' : 'Pending';
 			return redirect('/confirm', compact('message'));
@@ -130,21 +138,28 @@ class GuestsController extends Controller
 
     public function deny(Guest $guest, $id)
     {
-      // $guest->update(['status' => 'denied']);
+      $guest = Guest::find($id);
+      $guest->update(['status' => 'denied']);
 
-      Guest::find($id)->update(['status' => 'denied']);
+      Mail::to($guest->email)->send(
+        new DenyUnknown($guest)
+      );
       $message = 'denied';
       // flash message
 
-      return redirect('admin.unknown.index');
+      return redirect('/admin/unknown');
     }
 
     public function approve(Guest $guest, $id)
     {
-      // $guest->update(['status' => 'denied']);
+      $guest = Guest::find($id);
 
-      Guest::find($id)->update(['status' => 'approved']);
-      $message = 'denied';
+      $guest->update(['status' => 'approved']);
+      
+      Mail::to($guest->email)->send(
+        new RsvpConfirmation($guest)
+      );
+      $message = 'approved';
       // flash message
 
       return redirect('/admin/unknown');
