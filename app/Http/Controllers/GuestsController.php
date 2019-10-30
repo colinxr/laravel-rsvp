@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Mail;
 use App\Mail\RsvpConfirmation;
 use App\Mail\DenyUnknown;
+use App\Mail\StaffNotification;
 use App\Guest;
-use App\GuestList;
-use App\Unknown;
+use App\Event;
+use App\Invite;
 
 class GuestsController extends Controller
 {
@@ -20,17 +21,14 @@ class GuestsController extends Controller
     public function index(Guest $guest)
     {
         $guests = Guest::approved()->get()->sortBy('updated_at');
-
         $guestsCount = $guests->count();
         $plusOneCount = $guests->where('guest-email', '<>', '', 'and')->count();
-        
         return view('admin.index', compact('guests', 'guestsCount', 'plusOneCount'));
     }
 
-    public function showUnknowns(Guest $guest)
+    public function indexUnknowns(Guest $guest)
     {
       $guests = Guest::unknown()->get();
-
       return view('admin.unknown.index', compact('guests'));
     }
 
@@ -52,17 +50,11 @@ class GuestsController extends Controller
      */
     public function store(Request $request)
     {   
-			$form = request(['rsvp']);
-
-			// check event rsvp type
-			// check List
-			//$invited = GuestList::where('email', $form['rsvp']['email']);
-			$invited = true;
-
-			// if on list create Guest
-					// pull in extra info
-			// else create Unknown
-      // send correct confirmation message test to confirmation screen.
+      $form = request(['rsvp']);
+      //validate request
+      // check event rsvp type
+      $rsvpSettings = DB::table('event')->where('option', 'RSVP_TYPE')->first();
+      $rsvpType = $rsvpSettings->value;
       
       $guest = new Guest;
       $guest->firstName       = $form['rsvp']['first-name'];
@@ -74,15 +66,70 @@ class GuestsController extends Controller
       $guest->guest_firstName = $form['rsvp']['guest-firstName'];
       $guest->guest_lastName  = $form['rsvp']['guest-lastName'];
       $guest->guest_email     = $form['rsvp']['guest-email'];
-      $guest->status          = $invited ? 'approved' : 'pending';
-      $guest->save();
 
-      Mail::to($guest->email)->send(
-        new RsvpConfirmation($guest)
-      );
+      if ('Closed' === $rsvpType) {
+        $invited = Invite::where('email', $form['rsvp']['email'])->first();
+        $guest->status = 'pending';
 
-      $message = $invited ? 'Confirmed' : 'Pending';
-			return redirect('/confirm', compact('message'));
+        if ($invited !== null) {
+          $guest->status = 'approved';
+          $guest->company  = $invited->company;
+          $guest->guestOf  = $invited->guestOf;
+          $guest->gender  = $invited->gender;
+          $guest->category  = $invited->category;
+          $guest->role  = $invited->role;
+        }
+        $guest->save();
+
+        Mail::to('colinxr@gmail.com')->send(
+          new StaffNotification($guest)
+        );
+
+        $message = 'closed';
+        return redirect('/confirm', compact('message'));
+      }
+
+      if ('Open' === $rsvpType) {
+        $guest->status = 'approved';
+        $guest->save();
+
+        Mail::to($guest->email)->send(
+          new RsvpConfirmation($guest)
+        );
+
+        $message = 'Confirmed';
+        return redirect('/confirm', compact('message'));
+      }
+
+      if ('Match' === $rsvpType) {
+        // check List
+        $invited = Invite::where('email', $form['rsvp']['email'])->first();
+        $guest->status = 'pending';
+        
+        if ($invited !== null) {
+          $guest->status = 'approved';
+          $guest->company  = $invited->company;
+          $guest->guestOf  = $invited->guestOf;
+          $guest->gender  = $invited->gender;
+          $guest->category  = $invited->category;
+          $guest->role  = $invited->role;
+        }
+
+        $guest->save();
+
+        if ($invited !== null) {
+          Mail::to($guest->email)->send(
+            new RsvpConfirmation($guest)
+          );
+        } else {
+          Mail::to('colinxr@gmail.com')->send(
+            new StaffNotification($guest)
+          );
+        }
+
+        $message = $invited ? 'Confirmed' : 'Pending';
+        return redirect('/confirm', compact('message'));
+      }
     }
 
     /**
@@ -105,6 +152,7 @@ class GuestsController extends Controller
     public function edit($id)
     {
         //
+        return view('admin.guest');
     }
 
     /**
@@ -118,7 +166,7 @@ class GuestsController extends Controller
     {
         $guest->update([$request]);
         $message = 'success';
-        return redirect('admin.unknown.index', compact('message'));
+        return back();
     }
 
     /**
@@ -130,19 +178,13 @@ class GuestsController extends Controller
     public function destroy(Guest $guest, $id)
     {
       Guest::find($id)->delete();
-
-
       $message = 'delete';
       // flash message
-
       return redirect('admin.unknown.index', compact('message'));
     }
 
     public function deny(Guest $guest)
     {
-      // $guest = Guest::find($id);
-      // $guest->update(['status' => 'denied']);
-
       $guest->deny();
 
       Mail::to($guest->email)->send(
@@ -150,7 +192,6 @@ class GuestsController extends Controller
       );
       $message = 'denied';
       // flash message
-
       return back();
     }
 

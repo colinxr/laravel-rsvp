@@ -33,9 +33,6 @@
     </thead>
     <tbody>
       @foreach($guests as $guest)
-      {{-- <pre>
-        {{-- @php var_dump($guest); @endphp --}}
-      {{-- </pre> --}} 
       <tr>
         <td>{{ $guest->id }}</td>
         <td>{{ $guest->firstName }} {{ $guest->lastName }}</td>
@@ -45,13 +42,13 @@
         <td>{{ $guest->guestfirstName }} {{ $guest->guestLastName }}</td>
         <td>{{ $guest->guestEmail }}</td>
         <td>
-          <form action="/admin/unknown/deny/{{ $guest->id }}" method="POST">
+          <form action="/admin/guest/{{ $guest->id }}/deny" method="POST">
             @csrf
             @method('PATCH')
 
             <button type="submit">Deny</button>
           </form>
-          <form action="/admin/unknown/approve/{{ $guest->id }}" method="POST">
+          <form action="/admin/guest/{{ $guest->id }}/approve" method="POST">
              @csrf
              @method('PATCH')
 

@@ -22,14 +22,16 @@ Route::post('/guest', 'GuestsController@store');
 // Route::delete('/guest/{id}', 'GuestsController@destroy');
 
 Route::get('/admin', 'GuestsController@index');
-Route::get('/admin/unknown', 'GuestsController@showUnknowns');
-Route::get('/admin/list', 'PagesControllers@list');
+Route::get('/admin/unknown', 'GuestsController@indexUnknowns');
+Route::get('/admin/list', 'EventController@index');
 Route::get('/admin/download', 'EventController@download');
 
-Route::patch('/admin/unknown/deny/{guest}', 'GuestsController@deny');
-Route::patch('/admin/unknown/approve/{guest}', 'GuestsController@approve');
+Route::get('/admin/guest', 'GuestsController@edit');
+Route::patch('/admin/guest/{guest}', 'GuestsController@update');
+Route::patch('/admin/guest/{guest}/deny', 'GuestsController@deny');
+Route::patch('/admin/guest/{guest}/approve', 'GuestsController@approve');
 
-Route::patch('/admin/event', 'EventController@update');
+Route::patch('/admin/list/upload', 'EventController@update');
 
 
 /*------------------------------------*
@@ -37,14 +39,16 @@ Route::patch('/admin/event', 'EventController@update');
 //  TO Dos
 //
 /*------------------------------------*/
-// 0. Static resources on frontend -- wtfff
-// 1. Add Approve/Deny buttons to unknown index
-// 2. style table 
-// 3. add header info to admin pages 
+// 0. Done -- Static resources on frontend -- wtfff 
+// 1. Done -- Add Approve/Deny buttons to unknown index
+// 2. Done -- style table 
+// 3. Done --add header info to admin pages 
 // 4. /admin/list functionality
     // - upload list: convert csv to database table
     // - manage event type via dropdown form 
-    // - 
-// 5. send email confirmations/notifications 
+    // - create new open rsvp page
+// 5. send email confirmations
+    // - Done -- send RSVP confirmations
+    // - send notification emails
 
 

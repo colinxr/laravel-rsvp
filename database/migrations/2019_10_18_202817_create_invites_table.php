@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateListTable extends Migration
+class CreateInvitesTable extends Migration
 {
     /**
      * Run the migrations.
