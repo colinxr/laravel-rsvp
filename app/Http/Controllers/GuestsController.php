@@ -180,7 +180,7 @@ class GuestsController extends Controller
       Guest::find($id)->delete();
       $message = 'delete';
       // flash message
-      return redirect('admin.unknown.index', compact('message'));
+      return back();
     }
 
     public function deny(Guest $guest)
