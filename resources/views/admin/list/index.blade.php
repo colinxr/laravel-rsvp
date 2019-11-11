@@ -10,7 +10,7 @@
   <div class="wrapper">
     
     <h2>Upload a list</h2>
-    <form id="js-upload-list" action="/admin/list/upload" method="post">
+    <form id="js-upload-list" action="/admin/event/upload" method="post">
       @csrf    
       @method('patch')
       <label for="list">Upload CSV</label>
@@ -18,12 +18,17 @@
       <button type="submit">Submit</button>
     </form>
 
-    <h2>change type</h2>
-    <form action="/admin/list/type" method="post">
+    <h2>Change RSVP Type</h2>
+    
+    @if ($event_type)
+      <h5>Current RSVP Type: {{ $event_type }} </h5>
+    @endif
+    
+    <form action="/admin/event/type" method="post">
       @csrf
       @method('patch')
-      <label for="event-type">type</label>
-      <select name="event-type" id="event-type">
+      <label for="RSVP_TYPE">type</label>
+      <select name="RSVP_TYPE" id="rsvp_type">
         <option value="null">Select an Event Type</option>
         <option value="Open">Open RSVP</option>
         <option value="Match">Match our Guest List</option>

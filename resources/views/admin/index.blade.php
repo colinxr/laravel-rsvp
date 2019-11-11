@@ -3,7 +3,7 @@
 
 @section('content')
   <header>
-      <h1>Event App RSVP Entries</h1>
+      <h1>Laravel TEst App Backend</h1>
       <div class="form-group">
         <h4>Download this List</h4>
         <form method='post' action='/download'>
@@ -42,7 +42,7 @@
         <td>{{ $guest->postal }}</td>
         <td>{{ $guest->instagram }}</td>
         <td>{{ $guest->gender }}</td>
-        <td>{{ $guest->guestOf }}</td>
+        <td>{{ $guest->guest_of }}</td>
         <td>{{ $guest->company }}</td>
         <td>{{ $guest->guestfirstName }} {{ $guest->guestLastName }}</td>
         <td>{{ $guest->guestEmail }}</td>

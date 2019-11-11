@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Mail;
+use DB;
 use App\Mail\RsvpConfirmation;
 use App\Mail\DenyUnknown;
 use App\Mail\StaffNotification;
@@ -18,18 +19,12 @@ class GuestsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Guest $guest)
+    public function index()
     {
         $guests = Guest::approved()->get()->sortBy('updated_at');
         $guestsCount = $guests->count();
         $plusOneCount = $guests->where('guest-email', '<>', '', 'and')->count();
         return view('admin.index', compact('guests', 'guestsCount', 'plusOneCount'));
-    }
-
-    public function indexUnknowns(Guest $guest)
-    {
-      $guests = Guest::unknown()->get();
-      return view('admin.unknown.index', compact('guests'));
     }
 
     /**
@@ -50,34 +45,36 @@ class GuestsController extends Controller
      */
     public function store(Request $request)
     {   
+      $attributes = request()->validate([
+        'firstName' => 'required',
+        'lastName'  => 'required',
+        'email'      => 'required|email',
+        'postal'     => 'required|max:7',
+        'instagram'  => 'required',
+        'hasPlusOne' => '',
+        'guest_firstName' => '',
+        'guest_lastName' => '',
+        'guest_email' => ''
+      ]);
+
       $form = request(['rsvp']);
-      //validate request
-      // check event rsvp type
+
       $rsvpSettings = DB::table('event')->where('option', 'RSVP_TYPE')->first();
       $rsvpType = $rsvpSettings->value;
       
-      $guest = new Guest;
-      $guest->firstName       = $form['rsvp']['first-name'];
-      $guest->lastName        = $form['rsvp']['last-name'];
-      $guest->email           = $form['rsvp']['email'];
-      $guest->postal          = $form['rsvp']['postal'];
-      $guest->instagram       = $form['rsvp']['instagram'];
-      $guest->hasPlusOne      = $form['rsvp']['plus-one'];
-      $guest->guest_firstName = $form['rsvp']['guest-firstName'];
-      $guest->guest_lastName  = $form['rsvp']['guest-lastName'];
-      $guest->guest_email     = $form['rsvp']['guest-email'];
+      $guest = new Guest($attributes);
 
       if ('Closed' === $rsvpType) {
-        $invited = Invite::where('email', $form['rsvp']['email'])->first();
+        $invited = Invite::where('email', $attributes['email'])->first();
         $guest->status = 'pending';
 
         if ($invited !== null) {
-          $guest->status = 'approved';
+          $guest->status   = 'approved';
           $guest->company  = $invited->company;
           $guest->guestOf  = $invited->guestOf;
-          $guest->gender  = $invited->gender;
-          $guest->category  = $invited->category;
-          $guest->role  = $invited->role;
+          $guest->gender   = $invited->gender;
+          $guest->category = $invited->category;
+          $guest->role     = $invited->role;
         }
         $guest->save();
 
@@ -103,16 +100,16 @@ class GuestsController extends Controller
 
       if ('Match' === $rsvpType) {
         // check List
-        $invited = Invite::where('email', $form['rsvp']['email'])->first();
+        $invited = Invite::where('email', $attributes['email'])->first();
         $guest->status = 'pending';
         
         if ($invited !== null) {
-          $guest->status = 'approved';
+          $guest->status   = 'approved';
           $guest->company  = $invited->company;
-          $guest->guestOf  = $invited->guestOf;
-          $guest->gender  = $invited->gender;
-          $guest->category  = $invited->category;
-          $guest->role  = $invited->role;
+          $guest->guest_of  = $invited->guest_of;
+          $guest->gender   = $invited->gender;
+          $guest->category = $invited->category;
+          $guest->role     = $invited->role;
         }
 
         $guest->save();
@@ -179,31 +176,6 @@ class GuestsController extends Controller
     {
       Guest::find($id)->delete();
       $message = 'delete';
-      // flash message
-      return back();
-    }
-
-    public function deny(Guest $guest)
-    {
-      $guest->deny();
-
-      Mail::to($guest->email)->send(
-        new DenyUnknown($guest)
-      );
-      $message = 'denied';
-      // flash message
-      return back();
-    }
-
-    public function approve(Guest $guest)
-    {
-      $guest->approve();
-
-      Mail::to($guest->email)->send(
-        new RsvpConfirmation($guest)
-      );
-
-      $message = 'approved';
       // flash message
       return back();
     }

@@ -13,25 +13,26 @@
 
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\GuestsController;
-use App\Http\Controllers\UnknownsController;
+use App\Http\Controllers\UnknownGuestsController;
 use App\Http\Controllers\EventController;
 
 Route::get('/', 'GuestsController@create');
 Route::get('/confirm', 'PagesControllers@confirm');
 Route::post('/guest', 'GuestsController@store');
-// Route::delete('/guest/{id}', 'GuestsController@destroy');
+Route::delete('/guest/{id}', 'GuestsController@destroy');
 
 Route::get('/admin', 'GuestsController@index');
-Route::get('/admin/unknown', 'GuestsController@indexUnknowns');
+Route::get('/admin/unknown', 'UnknownGuestsController@index');
 Route::get('/admin/list', 'EventController@index');
 Route::get('/admin/download', 'EventController@download');
 
-Route::get('/admin/guest', 'GuestsController@edit');
-Route::patch('/admin/guest/{guest}', 'GuestsController@update');
+Route::get('/admin/guest/{guest}', 'GuestsController@edit');
+Route::patch('/admin/guest/{guest}', 'UnknownGuestsController@update');
 Route::patch('/admin/guest/{guest}/deny', 'GuestsController@deny');
 Route::patch('/admin/guest/{guest}/approve', 'GuestsController@approve');
 
-Route::patch('/admin/list/upload', 'EventController@update');
+Route::post('/admin/event/upload', 'EventController@store');
+Route::patch('/admin/event/type', 'EventController@update');
 
 
 /*------------------------------------*
@@ -47,7 +48,7 @@ Route::patch('/admin/list/upload', 'EventController@update');
     // - upload list: convert csv to database table
     // - manage event type via dropdown form 
     // - create new open rsvp page
-// 5. send email confirmations
+// 5. Done -- send email confirmations 
     // - Done -- send RSVP confirmations
     // - send notification emails
 

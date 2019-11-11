@@ -17,6 +17,7 @@ class CreateEventsTable extends Migration
             $table->bigIncrements('id');
             $table->string('option');
             $table->string('value');
+            $table->timestamps();
         });
     }
 

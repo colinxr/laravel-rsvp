@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Event;
+use App\Guest;
 
 class EventController extends Controller
 {
@@ -13,7 +15,9 @@ class EventController extends Controller
      */
     public function index()
     {
-        return view('admin/list.index');
+        $event_type = Event::where('option', 'RSVP_TYPE')->first()->value;
+
+        return view('admin/list.index', compact('event_type'));
     }
 
     /**
@@ -70,8 +74,13 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request)
+    {  
+        $event = Event::where('option', 'RSVP_TYPE')
+            ->first()
+            ->update(['value' => request('RSVP_TYPE')]);
+        
+        return back();
     }
 
     /**
