@@ -10,9 +10,9 @@
   <div class="wrapper">
     
     <h2>Upload a list</h2>
-    <form id="js-upload-list" action="/admin/event/upload" method="post">
+    <form id="js-upload-list" action="/admin/event/upload" method="POST" enctype="multipart/form-data">
       @csrf    
-      @method('patch')
+      {{-- @method('patch') --}}
       <label for="list">Upload CSV</label>
       <input type="file" name="list" id="">
       <button type="submit">Submit</button>

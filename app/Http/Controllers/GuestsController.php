@@ -59,8 +59,7 @@ class GuestsController extends Controller
 
       $form = request(['rsvp']);
 
-      $rsvpSettings = DB::table('event')->where('option', 'RSVP_TYPE')->first();
-      $rsvpType = $rsvpSettings->value;
+      $rsvpType = DB::table('event')->where('option', 'RSVP_TYPE')->first()->value;
       
       $guest = new Guest($attributes);
 
