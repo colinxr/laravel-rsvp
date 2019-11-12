@@ -11,13 +11,13 @@
 |
 */
 
-use App\Http\Controllers\PagesController;
 use App\Http\Controllers\GuestsController;
 use App\Http\Controllers\UnknownGuestsController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\PagesController;
 
 Route::get('/', 'GuestsController@create');
-Route::get('/confirm', 'PagesControllers@confirm');
+Route::get('/confirm', 'PagesController@confirm');
 Route::post('/guest', 'GuestsController@store');
 Route::delete('/guest/{id}', 'GuestsController@destroy');
 
@@ -28,8 +28,8 @@ Route::get('/admin/download', 'EventController@download');
 
 Route::get('/admin/guest/{guest}', 'GuestsController@edit');
 Route::patch('/admin/guest/{guest}', 'UnknownGuestsController@update');
-Route::patch('/admin/guest/{guest}/deny', 'GuestsController@deny');
-Route::patch('/admin/guest/{guest}/approve', 'GuestsController@approve');
+Route::patch('/admin/guest/{guest}/deny', 'UnknownGuestsController@deny');
+Route::patch('/admin/guest/{guest}/approve', 'UnknownGuestsController@approve');
 
 Route::post('/admin/event/upload', 'EventController@store');
 Route::patch('/admin/event/type', 'EventController@update');
@@ -46,7 +46,7 @@ Route::patch('/admin/event/type', 'EventController@update');
 // 3. Done --add header info to admin pages 
 // 4. /admin/list functionality
     // - upload list: convert csv to database table
-    // - manage event type via dropdown form 
+    // - Done -- manage event type via dropdown form 
     // - create new open rsvp page
 // 5. Done -- send email confirmations 
     // - Done -- send RSVP confirmations

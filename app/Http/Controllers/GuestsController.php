@@ -59,7 +59,7 @@ class GuestsController extends Controller
 
       $form = request(['rsvp']);
 
-      $rsvpType = DB::table('event')->where('option', 'RSVP_TYPE')->first()->value;
+      $rsvpType = DB::table('events')->where('option', 'RSVP_TYPE')->first()->value;
       
       $guest = new Guest($attributes);
 
@@ -82,7 +82,7 @@ class GuestsController extends Controller
         );
 
         $message = 'closed';
-        return redirect('/confirm', compact('message'));
+        return redirect()->route('/confirm');
       }
 
       if ('Open' === $rsvpType) {
@@ -94,7 +94,7 @@ class GuestsController extends Controller
         );
 
         $message = 'Confirmed';
-        return redirect('/confirm', compact('message'));
+        return redirect()->route('confirm');
       }
 
       if ('Match' === $rsvpType) {
@@ -124,7 +124,7 @@ class GuestsController extends Controller
         }
 
         $message = $invited ? 'Confirmed' : 'Pending';
-        return redirect('/confirm', compact('message'));
+        return redirect()->route('confirm');
       }
     }
 

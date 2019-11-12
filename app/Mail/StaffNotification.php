@@ -28,6 +28,6 @@ class StaffNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.staffNotification');
+        return $this->markdown('emails.StaffNotification');
     }
 }

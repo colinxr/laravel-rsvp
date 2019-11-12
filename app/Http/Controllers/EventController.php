@@ -42,33 +42,29 @@ class EventController extends Controller
     {
 
         $file = $request->file('list');
-
-        // $file = $file->move('/tmp/uploads', time() . '-'. $file->getClientOriginalName());
         $list = $file->getRealPath();
+
         $csv = Reader::createFromPath($list, 'r');
         $csv->setHeaderOffset(0);
+        
         $records = $csv->getRecords();
 
         foreach($records as $record) {
-            // $invite = Invite::updateOrCreate(
-            //     ['email' => $record['EMAIL_LOWER']], 
-            //     [
-            //         'firstName' => $record['FIRST_NAME'],
-            //         'lastName' => $record['LAST_NAME'],
-            //         'email' => $record['EMAIL_LOWER'],
-            //         'guest_of' => $record['INVITE'],
-            //         'company' => $record['COMPANY'],
-            //         'category' => $record['CATEGORY'],
-            //         'gender' => $record['SEX'],
-            //     ]
-            // );
-            echo '<pre>';
-                var_dump($record);
-            echo '</pre>';
+            $invite = Invite::updateOrCreate(
+                ['email' => $record['EMAIL_LOWER']], 
+                [
+                    'firstName' => $record['FIRST_NAME'],
+                    'lastName' => $record['LAST_NAME'],
+                    'email' => $record['EMAIL_LOWER'],
+                    'guest_of' => $record['INVITE'],
+                    'company' => $record['COMPANY'],
+                    'category' => $record['VIP_TYPE'],
+                    'gender' => $record['SEX'],
+                ]
+						);
         }
 
-
-        //delete csv file from tmp
+        return back();
     }
 
     /**

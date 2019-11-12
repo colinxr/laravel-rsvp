@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Mail;
 use App\Guest;
 use App\Mail\RsvpConfirmation;
 use App\Mail\DenyUnknown;
