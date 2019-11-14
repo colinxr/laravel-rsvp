@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateListTable extends Migration
+class CreateInvitesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class CreateListTable extends Migration
     {
         Schema::create('invites', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('event_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
@@ -24,6 +25,8 @@ class CreateListTable extends Migration
             $table->string('category')->nullable();
             $table->string('guest_of')->nullable();
             $table->timestamps();
+
+            $table->foreign('event_id')->references('id')->on('events');
         });
     }
 
@@ -34,6 +37,6 @@ class CreateListTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('list');
+        Schema::dropIfExists('invites');
     }
 }

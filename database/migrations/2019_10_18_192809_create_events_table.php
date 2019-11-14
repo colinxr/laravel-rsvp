@@ -15,9 +15,11 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('option');
-            $table->string('value');
+            $table->bigInteger('owner_id')->unsigned()->nullable();
+            $table->string('RSVP_TYPE');
             $table->timestamps();
+
+            $table->foreign('owner_id')->references('id')->on('users');
         });
     }
 

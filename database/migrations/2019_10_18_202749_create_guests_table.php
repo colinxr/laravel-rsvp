@@ -15,8 +15,9 @@ class CreateGuestsTable extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('firstName');
-            $table->string('lastName');
+            $table->bigInteger('event_id')->unsigned()->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email');
             $table->string('postal');
             $table->string('instagram')->nullable();
@@ -26,11 +27,13 @@ class CreateGuestsTable extends Migration
             $table->string('category')->nullable();
             $table->string('guest_of')->nullable();
             $table->string('hasPlusOne')->nullable();
-            $table->string('guest-firstName')->nullable();
-            $table->string('guest-lastName')->nullable();
-            $table->string('guest-email')->nullable();
+            $table->string('guest_firstName')->nullable();
+            $table->string('guest_lastName')->nullable();
+            $table->string('guest_email')->nullable();
             $table->string('status');
             $table->timestamps();
+
+            $table->foreign('event_id')->references('id')->on('events');
         });
     }
 
