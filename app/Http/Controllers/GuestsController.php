@@ -48,13 +48,13 @@ class GuestsController extends Controller
       $attributes = request()->validate([
         'firstName' => 'required',
         'lastName'  => 'required',
-        'email'      => 'required|email',
+        'email'      => 'required|email|unique:guests,email',
         'postal'     => 'required|max:7',
         'instagram'  => 'required',
         'hasPlusOne' => '',
-        'guest_firstName' => '',
-        'guest_lastName' => '',
-        'guest_email' => ''
+        'guest-firstName' => '',
+        'guest-lastName' => '',
+        'guest-email' => ''
       ]);
 
       $form = request(['rsvp']);
@@ -64,7 +64,7 @@ class GuestsController extends Controller
       $guest = new Guest($attributes);
 
       if ('Closed' === $rsvpType) {
-        $invited = Invite::where('email', $attributes['email'])->first();
+        $invited = Invite::where('email', $guest->email)->first();
         $guest->status = 'pending';
 
         if ($invited !== null) {
@@ -82,7 +82,7 @@ class GuestsController extends Controller
         );
 
         $message = 'closed';
-        return redirect()->route('/confirm');
+        return redirect('confirm');
       }
 
       if ('Open' === $rsvpType) {
@@ -94,14 +94,14 @@ class GuestsController extends Controller
         );
 
         $message = 'Confirmed';
-        return redirect()->route('confirm');
+      return redirect('confirm');
       }
 
       if ('Match' === $rsvpType) {
         // check List
-        $invited = Invite::where('email', $attributes['email'])->first();
+        $invited = Invite::where('email', $guest->email)->first();
         $guest->status = 'pending';
-        
+
         if ($invited !== null) {
           $guest->status   = 'approved';
           $guest->company  = $invited->company;
@@ -124,7 +124,7 @@ class GuestsController extends Controller
         }
 
         $message = $invited ? 'Confirmed' : 'Pending';
-        return redirect()->route('confirm');
+        return redirect('confirm');
       }
     }
 
@@ -134,9 +134,9 @@ class GuestsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Guest $guest)
     {
-        //
+        return view('admin.guest', compact('guest'));
     }
 
     /**
@@ -145,10 +145,9 @@ class GuestsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Guest $guest)
     {
-        //
-        return view('admin.guest');
+        return view('admin.guestEdit', compact('guest'));
     }
 
     /**
@@ -160,9 +159,18 @@ class GuestsController extends Controller
      */
     public function update(Request $request, Guest $guest)
     {
-        $guest->update([$request]);
-        $message = 'success';
-        return back();
+      $attributes = request()->validate([
+        'firstName' => 'required',
+        'lastName'  => 'required',
+        'guest-firstName' => '',
+        'guest-lastName' => '',
+        'guest-email' => ''
+      ]);
+      
+      $guest->update($attributes);
+      // dd($guest);
+      $message = 'success';
+      return back();
     }
 
     /**

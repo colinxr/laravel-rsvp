@@ -34,13 +34,13 @@
     <tbody>
       @foreach($guests as $guest)
       <tr>
-        <td>{{ $guest->id }}</td>
+        <td><a href="/admin/guest/{{ $guest->id }}/edit ">{{ $guest->id }}</a></td>
         <td>{{ $guest->firstName }} {{ $guest->lastName }}</td>
         <td>{{ $guest->email }}</td>
         <td>{{ $guest->postal }}</td>
         <td>{{ $guest->instagram }}</td>
-        <td>{{ $guest->guestfirstName }} {{ $guest->guestLastName }}</td>
-        <td>{{ $guest->guestEmail }}</td>
+        <td>{{ $guest['guest-firstName'] }} {{ $guest['guest-lastName'] }}</td>
+        <td>{{ $guest['guest-email'] }}</td>
         <td>
           <form action="/admin/guest/{{ $guest->id }}/deny" method="POST">
             @csrf

@@ -26,8 +26,9 @@ Route::get('/admin/unknown', 'UnknownGuestsController@index');
 Route::get('/admin/list', 'EventController@index');
 Route::get('/admin/download', 'EventController@download');
 
-Route::get('/admin/guest/{guest}', 'GuestsController@edit');
-Route::patch('/admin/guest/{guest}', 'UnknownGuestsController@update');
+Route::get('/admin/guest/{guest}', 'GuestsController@show');
+Route::patch('/admin/guest/{guest}', 'GuestsController@update');
+Route::get('/admin/guest/{guest}/edit', 'GuestsController@edit');
 Route::patch('/admin/guest/{guest}/deny', 'UnknownGuestsController@deny');
 Route::patch('/admin/guest/{guest}/approve', 'UnknownGuestsController@approve');
 
@@ -53,3 +54,7 @@ Route::patch('/admin/event/type', 'EventController@update');
     // - send notification emails
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

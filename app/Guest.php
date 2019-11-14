@@ -8,7 +8,7 @@ class Guest extends Model
 {
     //    
     protected $fillable = [
-        'firstName', 'lastName', 'email', 'postal', 'instagram', 'gender', 'company', 'role', 'category', 'guest_of', 'guest-firstName', ' guest-lastName', 'guest-email', 'status',
+        'firstName', 'lastName', 'email', 'postal', 'instagram', 'gender', 'company', 'role', 'category', 'guest_of', 'guest-firstName', 'guest-lastName', 'guest-email', 'status',
     ];
 
     public function scopeUnknown($query)

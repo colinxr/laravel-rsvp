@@ -44,8 +44,8 @@
         <td>{{ $guest->gender }}</td>
         <td>{{ $guest->guest_of }}</td>
         <td>{{ $guest->company }}</td>
-        <td>{{ $guest->guestfirstName }} {{ $guest->guestLastName }}</td>
-        <td>{{ $guest->guestEmail }}</td>
+        <td>{{ $guest['guest-firstName'] }} {{ $guest['guest-lastName'] }}</td>
+        <td>{{ $guest['guest-email'] }}</td>
       </tr>
       @endforeach
     </tbody>

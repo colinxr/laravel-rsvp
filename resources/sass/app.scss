@@ -1,28 +1,8 @@
-@import 'form';
-//
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
-.content { width: 80%; margin: 0 auto; }
+// Variables
+@import 'variables';
 
-.wrapper {
-  width: 90%;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-table { 
-  margin: 0 auto; 
-
-  
-  th + th,
-  td + td { padding-left: 10px; }
-  
-  tr { padding: 5px 0; }
-  
-  form { display: inline; }
-}
-
-.input-group {
-  & + .input-group { margin-top: 25px; }
-}
-
-
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
