@@ -11100,3 +11100,13 @@ a.text-dark:focus {
   }
 }
 
+.navbar-nav {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+}
+
+.navbar-nav * + * {
+  margin-left: 15px;
+}
+

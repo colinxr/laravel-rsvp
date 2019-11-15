@@ -6,3 +6,8 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.navbar-nav {
+  flex-direction: row;
+  * + * { margin-left: 15px; }
+}

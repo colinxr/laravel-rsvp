@@ -13,27 +13,49 @@
 
 use App\Http\Controllers\GuestsController;
 use App\Http\Controllers\UnknownGuestsController;
-use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventsController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\AdminController;
 
-Route::get('/', 'GuestsController@create');
-Route::get('/confirm', 'PagesController@confirm');
-Route::post('/guest', 'GuestsController@store');
-Route::delete('/guest/{id}', 'GuestsController@destroy');
+Route::get('/', 'AdminController@index');
 
-Route::get('/admin', 'GuestsController@index');
-Route::get('/admin/unknown', 'UnknownGuestsController@index');
-Route::get('/admin/list', 'EventController@index');
-Route::get('/admin/download', 'EventController@download');
+Route::name('admin')->group(function() {
+    Route::get('/', 'AdminController@show');
+    Route::get('/new', 'EventsController@create');
+    Route::get('/events', 'EventsController@showAll');
+    Route::post('/event', 'EventsController@store');
 
-Route::get('/admin/guest/{guest}', 'GuestsController@show');
-Route::patch('/admin/guest/{guest}', 'GuestsController@update');
-Route::get('/admin/guest/{guest}/edit', 'GuestsController@edit');
-Route::patch('/admin/guest/{guest}/deny', 'UnknownGuestsController@deny');
-Route::patch('/admin/guest/{guest}/approve', 'UnknownGuestsController@approve');
+    Route::get('/{event}', 'EventsController@show');
+    Route::get('/{event}/edit', 'EventsController@edit');
+    Route::post('/{event}/list', 'InvitesController@store');
+    Route::patch('/{event}/edit', 'EventsController@update');
 
-Route::post('/admin/event/upload', 'EventController@store');
-Route::patch('/admin/event/type', 'EventController@update');
+    Route::get('/{event}/{guest}', 'GuestsController@show');
+    Route::patch('/{event}/{guest}', 'GuestsController@update');
+    Route::get('/{event}/{guest}/edit', 'GuestsController@edit');
+    Route::patch('/{event}/{guest}/deny', 'UnknownGuestsController@deny');
+    Route::patch('/{event}/{guest}/approve', 'UnknownGuestsController@approve');
+});
+
+Route::name('event')->group(function() {
+    Route::get('/{slug}', 'EventsController@index');
+    Route::get('/{slug}/confirm', 'EventsController@confirm');
+    Route::post('/{slug}/guest', 'GuestsController@store');
+});
+
+
+
+
+// Route::get('/admin', 'GuestsController@index');
+// Route::get('/admin/unknown', 'UnknownGuestsController@index');
+// Route::get('/admin/list', 'EventController@index');
+// Route::get('/admin/download', 'EventController@download');
+
+// Route::patch('/admin/guest/{guest}/deny', 'UnknownGuestsController@deny');
+// Route::patch('/admin/guest/{guest}/approve', 'UnknownGuestsController@approve');
+
+// Route::post('/admin/event/upload', 'EventController@store');
+// Route::patch('/admin/event/type', 'EventController@update');
 
 
 /*------------------------------------*
