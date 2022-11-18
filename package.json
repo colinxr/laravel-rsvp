@@ -25,6 +25,6 @@
     "dependencies": {
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",
         "vue-template-compiler": "^2.6.10",
-        "webpack-cli": "^3.3.9"
+        "webpack-cli": "^3.3.12"
     }
 }
